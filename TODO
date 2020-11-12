@@ -1,0 +1,7 @@
+* document (including man page)
+* add installation script
+* clean
+    * fix inexplicable formatting
+    * make interactive output more aesthetically-pleasing
+    * maybe make variable names more sane?
+* test the "-d" option more
