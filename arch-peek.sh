@@ -11,8 +11,14 @@ RETURNDIR="$(pwd)"
 # flags ==
 INTERACTIVE=0
 VERBOSE=0
-ROOTISRELATIVE=0
 
+######################################################################
+# Provide usage information for this script and halt execution.
+# Globals:
+#   none
+# Arguments:
+#   PROGRAMNAME:    the name of this script
+######################################################################
 usage () {
     PROGRAMNAME=$1
     echo ""
@@ -82,6 +88,16 @@ maybeprint () {
     fi
 }
 
+######################################################################
+# Create the temporary environment in which the chosen archive will
+#   be inflated, change to the target directory, and then inflate the
+#   archive there.
+# Globals:
+#   none
+# Arguments:
+#   ARTIFACT:   the path to the archive to be inflated
+#   PEEKROOT:   the root directory to inflate the archive in
+######################################################################
 create_env () {
     ARTIFACT=$1
     PEEKROOT=$2
@@ -99,6 +115,14 @@ create_env () {
     jar xvf $ARTIFACT > /dev/null 2>&1
 }
 
+######################################################################
+# Either change to a target directory or output the contents of a
+#   target file, depending on which is given as an argument.
+# Globals:
+#   none
+# Arguments:
+#   FILEORDIR:  a path to either a file or a directory
+######################################################################
 cd_or_cat () {
     FILEORDIR=$1
 
@@ -126,10 +150,12 @@ cd_or_cat () {
 # Globals:
 #   none
 # Arguments:
-#   none
+#   CONFIRMTEXT:    the text to ask the user to confirm (e.g. "Are you
+#                   sure {something}?"
 ######################################################################
 userconfirm () {
-	echo -n "Are you sure? (y/N) "
+    CONFIRMTEXT=$1
+    echo -n "$CONFIRMTEXT (y/N) "
 	read res
 	RESPONSE="$(echo $res | awk '{print tolower($0)}')"
 	if [ $RESPONSE = "yes" ] || [ $RESPONSE = "y" ]; then
@@ -200,7 +226,7 @@ interact () {
         echo "-------------------------------"
         
         if [ $SELECTION = "q" ]; then
-			userconfirm
+			userconfirm "This will delete this temporary folder. Are you sure?"
             CONFIRM=$?
 			if [ $CONFIRM -eq 0 ]; then
 				cleanup
@@ -231,3 +257,4 @@ create_env $FILEPATH $TEMPROOT
 if [ $INTERACTIVE -eq 1 ]; then
     interact
 fi
+
