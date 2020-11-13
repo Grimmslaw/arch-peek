@@ -1,8 +1,7 @@
-* document (including man page)
+* create man page
 * add installation script
 * clean
     * fix inexplicable formatting
     * make interactive output more aesthetically-pleasing
     * maybe make variable names more sane?
 * test the "-d" option more
-* make interactive mode the default (so change -i to like -n or something to disable it --> explodes jar, cd's you there, then quits; no cleanup)

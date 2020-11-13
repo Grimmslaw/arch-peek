@@ -9,7 +9,7 @@ programname="$0"
 RETURNDIR="$(pwd)"
 
 # flags ==
-INTERACTIVE=0
+INTERACTIVE=1
 VERBOSE=0
 
 ######################################################################
@@ -26,7 +26,7 @@ usage () {
     echo "Peek into an archive file (any .*ar that is a legal argument to the 'jar' command)"
     echo ""
     echo "  -h      display this help text and quit"
-    echo "  -i      run this program in interactive mode and destroy the temporary directory on exit"
+    echo "  -n      disable interactive mode (i.e. the temporary directory will be create, the file will be inflated, your directory will be changed to that temporary directory, and the program will exit)"
     echo "  -v      verbose mode: echo commands as they are called [not respected during interactive loop]"
     echo "  -d  dirname     specify a directory relative to which '/tmp/temp-explode' should be updated or created"
     echo ""
@@ -36,9 +36,9 @@ usage () {
 
 ROOTCONTEXT=""
 
-while getopts ":hivd:" opt; do
+while getopts ":hnvd:" opt; do
     case $opt in
-        i ) INTERACTIVE=1
+        n ) INTERACTIVE=0
             ;;
         v ) VERBOSE=1
             ;;
